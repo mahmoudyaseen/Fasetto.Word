@@ -1,0 +1,10 @@
+WPF application run in main thread
+only that thread handle ui changes
+so if u make new thread and make ui changes on it
+it will crash(but u will not see that) so u will see that nothing happen
+
+to see all failers/crashes go to Debug\Windows\Exception Settings
+and mark on Common Language Runtime Exceptions
+
+and u can see the threads by run the application in debugging mode and use break point,
+go to Debug\Windows\Threads

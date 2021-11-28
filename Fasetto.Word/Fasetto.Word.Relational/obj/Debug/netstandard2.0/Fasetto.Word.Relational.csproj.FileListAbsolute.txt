@@ -1,0 +1,12 @@
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Relational.deps.json
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Relational.dll
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Relational.pdb
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Core.dll
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Core.pdb
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.csprojAssemblyReference.cache
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.AssemblyInfoInputs.cache
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.AssemblyInfo.cs
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.csproj.CoreCompileInputs.cache
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.csproj.CopyComplete
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.dll
+E:\my_data\DOTNET\WPF\Fasetto.Word\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.pdb

@@ -1,0 +1,207 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Fasetto.Word">
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="HeaderText" BasedOn="{StaticResource BaseTextBlockStyle}">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0 6"/>
+    </Style>
+
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}">
+
+        <!-- Font... this for actual text for typing inside the textbox not placeholder -->
+        <Setter Property="FontSize" Value="{StaticResource FontSizeXXLarge}"/>
+        <Setter Property="FontFamily" Value="{StaticResource LatoRegular}"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="0 5"/>
+        <Setter Property="BorderBrush" Value="{StaticResource WordBlueBrush}"/>
+        <Setter Property="BorderThickness" Value="0 0 0 1"/>
+
+        <Setter Property="Background" Value="{StaticResource ForegroundLightBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundVeryDarkBrush}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    
+                    <!-- we need a place holder so we put the actual textbox in grid and add the placeholder so they will be over eachother -->
+                    <Grid>
+                        
+                        <Border x:Name="border" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+
+                        <!-- by default in text box VerticalAlignment is center so we make same in text  
+                                                    HorizontalAlignment can be any thing so we make it the same as user enter in XAML To be int the same place as actual Text in textbox -->
+                        <TextBlock IsHitTestVisible="False" 
+                                   Text="{TemplateBinding Tag}"
+                                   x:Name="Placeholder"
+                                   FontFamily="{StaticResource LatoThin}"
+                                   Padding="{TemplateBinding Padding}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                   Foreground="{StaticResource ForegroundVeryDarkBrush}">
+
+                            <!-- we want to make this textblock is visiable only if the Text property of textbox(parent template) not the textbox(current template) -->
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <!-- if trigger set a value of property, u should set it before trigger as default value when the trigger don't match
+                                         we set Visibility by default is collapsed and this value will be when the trigger don't match -->
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <!-- we make trigger on data when Text of the parent template(textbox) is empty we make the textbox visible -->
+                                        <!-- this is the way to bind with a parent template not as if u want to bind in the same template {TemplateBinding Property} -->
+                                        <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            
+                        </TextBlock>
+
+                    </Grid>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+        
+    </Style>
+
+    <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource BaseStyle}">
+
+        <!-- Font... this for actual text for typing inside the textbox not placeholder -->
+        <Setter Property="FontSize" Value="{StaticResource FontSizeXXLarge}"/>
+        <Setter Property="FontFamily" Value="{StaticResource LatoRegular}"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="0 5"/>
+        <Setter Property="BorderBrush" Value="{StaticResource WordBlueBrush}"/>
+        <Setter Property="BorderThickness" Value="0 0 0 1"/>
+
+        <Setter Property="Background" Value="{StaticResource ForegroundLightBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundVeryDarkBrush}"/>
+
+
+        <Setter Property="local:MonitorPasswordProperty.Value" Value="True"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+
+                    <!-- we need a place holder so we put the actual textbox in grid and add the placeholder so they will be over eachother -->
+                    <Grid>
+
+                        <Border x:Name="border" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+
+                        <!-- by default in text box VerticalAlignment is center so we make same in text  
+                                                    HorizontalAlignment can be any thing so we make it the same as user enter in XAML To be int the same place as actual Text in textbox -->
+                        <TextBlock IsHitTestVisible="False" 
+                                   Text="{TemplateBinding Tag}"
+                                   x:Name="Placeholder"
+                                   FontFamily="{StaticResource LatoThin}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   Padding="{TemplateBinding Padding}"
+                                   Visibility="{TemplateBinding local:HasTextProperty.Value, Converter={local:BooleanToVisiblityConverter}}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                   Foreground="{StaticResource ForegroundVeryDarkBrush}">
+
+                            <!-- this way don't show correctly in life design ant this is not the best way u can just bind HasText to Visibility and make converter -->
+                            <!-- we want to make this textblock is visiable only if the Text property of textbox(parent template) not the textbox(current template) --><!--
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    --><!-- if trigger set a value of property, u should set it before trigger as default value when the trigger don't match
+                                         we set Visibility by default is collapsed and this value will be when the trigger don't match --><!--
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        --><!-- we make trigger on data when Text of the parent template(textbox) is empty we make the textbox visible -->
+                                        <!-- this is the way to bind with a parent template not as if u want to bind in the same template {TemplateBinding Property} --><!--
+                                        <DataTrigger Binding="{Binding (local:HasTextProperty.Value), RelativeSource={RelativeSource TemplatedParent}}" Value="false">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>-->
+
+                        </TextBlock>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="SpinningText" BasedOn="{StaticResource BaseTextBlockStyle}">
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
+        <Setter Property="Text" Value="&#xf110;" />
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform/>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Resources>
+            <Storyboard x:Key="Spin">
+                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                 From="0"
+                                 To="360"
+                                 Duration="0:0:2"
+                                 RepeatBehavior="Forever"/>
+            </Storyboard>
+        </Style.Resources>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=IsVisible}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Name="SpinStoryboard" Storyboard="{StaticResource Spin}"/>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <RemoveStoryboard BeginStoryboardName="SpinStoryboard"/>
+                </DataTrigger.ExitActions>
+            </DataTrigger> 
+        </Style.Triggers>
+        
+    </Style>
+
+</ResourceDictionary>

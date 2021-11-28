@@ -1,0 +1,9 @@
+[2021-04-22 08:07:18] We are alive [Startup.cs > Configure() > Line 125]
+[2021-05-03 05:56:22] Invalid password for user.
+[2021-05-04 04:56:53] Invalid password for user.
+[2021-05-08 06:13:10] Change password failed for user.
+[2021-05-08 06:13:25] Change password failed for user.
+[2021-05-08 06:13:33] Change password failed for user.
+[2021-05-08 06:13:42] User password validation failed: PasswordTooShort;PasswordRequiresLower;PasswordRequiresUniqueChars.
+[2021-05-08 06:14:46] Invalid password for user.
+[2021-05-08 06:17:31] Invalid password for user.

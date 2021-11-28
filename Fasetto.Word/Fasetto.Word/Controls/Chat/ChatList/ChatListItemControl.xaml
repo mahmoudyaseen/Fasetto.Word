@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="Fasetto.Word.ChatListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Fasetto.Word"
+             xmlns:core="clr-namespace:Fasetto.Word.Core;assembly=Fasetto.Word.Core"
+             mc:Ignorable="d"
+             d:DesignWidth="300">
+
+    <ContentControl.Resources>
+        <Style x:Key="ContentStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        
+                        <!-- Content -->
+                        <Border x:Name="background" Background="{StaticResource ForegroundLightBrush}">
+
+                            <!-- Click to open message -->
+                            <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{Binding OpenMessageCommand}"/>
+                            </Border.InputBindings>
+                            
+                            <Grid x:Name="container" Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <!-- New Message Indicator Bar -->
+                                    <!-- Propfile Picture -->
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- Main Content -->
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- New Message Indicator Bar -->
+                                <Border Background="Red" 
+                                        Width="4" 
+                                        HorizontalAlignment="Left"
+                                        Visibility="{Binding NewContentAvailable, Converter={local:BooleanToVisiblityConverter}, ConverterParameter=True}"/>
+
+                                <!-- Propfile Picture Padding -->
+                                <Border Grid.Column="0" Padding="8 15">
+                                    <!-- Propfile Picture Background -->
+                                    <!-- If u want it to be a circle make width = height,
+                                         corner redius = 1/2 width ot height(Max radius), 
+                                         if u make it bigger it don't matter will do no thing -->
+                                    <Border Height="40"
+                                            Background="{Binding ProfilePictureRGB, Converter={local:StringRGBToBrushConverter}}"
+                                            Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                                            CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
+                                         <!-- Propfile Picture initials -->
+                                        <TextBlock Text="{Binding Initials}" 
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{StaticResource ForegroundLightBrush}"
+                                                   FontSize="{StaticResource FontSizeLarge}"
+                                                   FontFamily="{StaticResource LatoRegular}"/>
+                                    </Border>
+                                </Border>
+
+                                <!-- Main Content -->
+                                <Border Grid.Column="1" Padding="0 0 15 0">
+
+                                    <StackPanel  VerticalAlignment="Center">
+                                        <!-- Name -->
+                                        <!-- we can use FallbackValue to show data but if this binding fails this data will be show,
+                                             this is not corect so we use design time view model -->
+                                        <TextBlock Text="{Binding Name}"
+                                                   Padding="0 0 0 2"
+                                                   Foreground="{StaticResource WordBlueBrush}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   FontFamily="{StaticResource LatoRegular}"/>
+                                        <!-- Message -->
+                                        <TextBlock Text="{Binding Message}"
+                                                   Padding="0 2 0 0"
+                                                   Foreground="{StaticResource ForegroundDarkBrush}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   FontFamily="{StaticResource LatoRegular}"/>
+
+                                    </StackPanel>
+
+                                </Border>
+
+                            </Grid>
+                        </Border>
+
+                        <!-- Hover Effect -->
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <!-- IF u want to make animation use storyboard its optimized -->
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!-- set color not brush, to means u want the current color go to what, Duration="h:m:s" -->
+                                        <ColorAnimation To="{StaticResource WordVeryVeryLightBlue}" Duration="0:0:0.3" Storyboard.TargetName="container" Storyboard.TargetProperty="Background.Color"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <!-- IF u want to make animation use storyboard its optimized -->
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!-- set color not brush, to means u want the current color go to what, Duration="h:m:s" -->
+                                        <ColorAnimation To="Transparent" Duration="0:0:0.3" Storyboard.TargetName="container" Storyboard.TargetProperty="Background.Color"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="container" Value="{StaticResource ForegroundDarkBrush}"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Background" TargetName="background" Value="{StaticResource WordVeryVeryLightBlueBrush}"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentControl.Resources>
+    
+    <!-- A design time data and use d namespace
+         d: means it is in design only and don't use it in runtime -->
+    <ContentControl d:DataContext="{x:Static local:ChatListItemDesignModel.Instance}"
+                    Style="{StaticResource ContentStyle}"/>
+
+</UserControl>

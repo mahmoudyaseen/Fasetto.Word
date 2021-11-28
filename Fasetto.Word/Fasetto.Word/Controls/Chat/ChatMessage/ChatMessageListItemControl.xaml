@@ -1,0 +1,168 @@
+﻿<UserControl x:Class="Fasetto.Word.ChatMessageListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Fasetto.Word"
+             xmlns:core="clr-namespace:Fasetto.Word.Core;assembly=Fasetto.Word.Core"
+             mc:Ignorable="d" d:DesignWidth="300">
+    <Border Padding="5" 
+            d:DataContext="{x:Static local:ChatMessageListItemDesignModel.Instance}"
+            >
+        <Grid>
+
+            <!-- Profile picture -->
+            <Border VerticalAlignment="Top" 
+                    HorizontalAlignment="Left"
+                    Margin="0 7.5"
+                    Visibility="{Binding SentByMe, Converter={local:BooleanToVisiblityConverter}}"
+                    Width="35"
+                    Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                    CornerRadius="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                    Background="Green"
+                    BorderBrush="{StaticResource ForegroundLightBrush}"
+                    BorderThickness="1"
+                    >
+
+                <TextBlock Text="{Binding Initials}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="{StaticResource ForegroundLightBrush}"
+                           FontFamily="{StaticResource LatoRegular}"
+                           />
+
+            </Border>
+
+            <!-- Chat message container -->
+            <Grid Margin="25 0 25 0"
+                  HorizontalAlignment="{Binding SentByMe, Converter={local:SendByMeAlignmentConverter}}">
+
+                <Grid.Triggers>
+                    <!-- Mouse over shows the time -->
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard Storyboard.TargetName="ExtraDetails" Storyboard.TargetProperty="Opacity">
+                                <DoubleAnimation To="1" Duration="00:00:00.5"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+
+                    <!-- Mouse leave hides the time -->
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard Storyboard.TargetName="ExtraDetails" Storyboard.TargetProperty="Opacity">
+                                <DoubleAnimation To="0" Duration="00:00:00.5"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Grid.Triggers>
+                
+
+                <!-- Message text/attachments grid -->
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Image Loading Glyph -->
+                    <Border HorizontalAlignment="{Binding SentByMe, Converter={local:SendByMeAlignmentConverter}}"
+                            VerticalAlignment="Top">
+
+                        <!-- when ImageAttachment is null(we have no image) the binding will fail,
+                         so FallbackValue will set his value,
+                         means:Collapsed when there is no image -->
+                        <TextBlock Style="{StaticResource SpinningText}"
+                               Foreground="{StaticResource ForegroundLightBrush}"
+                               Padding="20"
+                               DataContext="{Binding ImageAttachment}"
+                               Visibility="{Binding ImageLoaded, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=True, FallbackValue=Collapsed}"
+                               />
+
+                    </Border>
+
+                    <!-- Image Attachment -->
+                    <Border CornerRadius="10"
+                            Margin="0 0 0 15"
+                            Visibility="{Binding HasImageAttachment, Converter={local:BooleanToVisiblityGoneConverter}}">
+
+                        <Image DataContext="{Binding ImageAttachment}"
+                               local:ClipFromBorderProperty.Value="True"
+                               local:FadeInImageOnLoadProperty.Value="True"
+                               Source="{Binding LocalFilePath, NotifyOnTargetUpdated=True}"
+                               MaxHeight="300"/>
+
+                    </Border>
+
+                    <!-- Chat message text bubble -->
+                    <Grid Grid.Row="1"
+                          Visibility="{Binding HasMessage, Converter={local:BooleanToVisiblityGoneConverter}}"
+                          HorizontalAlignment="{Binding SentByMe, Converter={local:SendByMeAlignmentConverter}}"
+                          >
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Speech bubble rectangle -->
+                        <Border CornerRadius="10"
+                                Padding="15"
+                                Background="{Binding SentByMe, Converter={local:SendByMeBackgroundConverter}}">
+
+                            <!-- Message text -->
+                            <TextBlock VerticalAlignment="Center" 
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource WordDarkBlueBrush}"
+                                       FontFamily="{StaticResource LatoRegular}"
+                                       Text="{Binding Message}" />
+
+                        </Border>
+
+                        <!-- Chat bubble anchor -->
+                        <Path Grid.Row="1" 
+                              Panel.ZIndex="1"
+                              Stroke="Black"
+                              Margin="15 -1 15 0"
+                              StrokeThickness="0" 
+                              Fill="{Binding SentByMe, Converter={local:SendByMeBackgroundConverter}}"
+                              HorizontalAlignment="{Binding SentByMe, Converter={local:SendByMeAlignmentConverter}}"
+                              Data="M 0,0 L 10,10 L 20,0 L 0,0" />
+
+                        <!-- Time Containers -->
+                        <StackPanel x:Name="ExtraDetails"
+                            Opacity="0"
+                            Orientation="Horizontal"
+                            Grid.Row="2"
+                            HorizontalAlignment="{Binding SentByMe, Converter={local:SendByMeAlignmentConverter}, ConverterParameter=True}">
+
+                            <!-- Send Time -->
+                            <TextBlock 
+                            Text="{Binding MessageSentTime, Converter={local:TimeToDisplayTimeConverter}}"
+                            Foreground="{StaticResource ForegroundLightBrush}"
+                            FontSize="{StaticResource FontSizeSmall}"
+                            FontFamily="{StaticResource LatoRegular}"
+                            Margin="0 0 15 0"
+                            />
+
+                            <!-- Read Time -->
+                            <TextBlock 
+                            Text="{Binding MessageReadTime, Converter={local:TimeToReadTimeConverter}}"
+                            Foreground="{StaticResource WordDarkBlueBrush}"
+                            FontSize="{StaticResource FontSizeSmall}"
+                            FontFamily="{StaticResource LatoRegular}"
+                            />
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+    </Border>
+</UserControl>

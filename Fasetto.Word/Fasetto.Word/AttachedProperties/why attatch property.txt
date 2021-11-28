@@ -1,0 +1,51 @@
+﻿why we first use binding?
+becouse WPF work as MVVM to seprate ur view from any code
+so in design backend u should write as small as possible of code
+DataContext = new ViewModel();
+so u should make binding to make what u want
+
+how can u make binding?
+when u bind to any property there is 2 ways to make that
+
+way 1:
+when u make source a ViewModel that implement INotifyPropertyChanged, PropertyChanged ...
+
+way 2:
+when u make source a UI property
+EX: when u want to bind a TextBox.Text as a Source
+
+when u bind to any property in UI as a source, u actually bind to its DependencyProperty
+EX: go to TextBox and see the attributes u will found that:
+there is a [string Text] but when u bind to it u actually bind to [DependencyProperty TextProperty]
+
+think of that DependencyProperty as a ViewModel
+DependencyProperty has events like PropertyChanged and INotifyPropertyChanged ...
+so u can bind to it
+
+
+why u need AttachedProperty?
+
+ok if the UI class that u want to make its prorety ur source have not a DependencyProperty on whatever u want to bind with?
+EX: PasswordBox.Password -> has no DependencyProperty
+
+u create a new UI class?
+u create a class that have instance of that UI class(u will lose alot of functionality)?
+and PasswordBox class is sealed that mean it can't be parent for another class so u can't inherit of him
+u broke ur MVVM and make events listin on password change and make ur conde design backend like WinForms?
+
+u should use a AttachedProperty and this is a DependencyProperty and u can add it to any element
+so u can attatch it to passwordBox
+
+so DependencyProperty used to add additonal information u need
+<TextBox Grid.Column="0" -> [Grid.Column="0"  is an AttachedProperty]
+
+attached property so it allows us to specify extra pieces of information we need on UI elements to enhance the UI functionality that's all the purpose 
+
+the attached property can added to any element like this in EX:Grid.Column="0" this is an attached property(u make it) and u can use it inside any element
+i just want to say this attatch property can added to any element not just textbox or passwordbox
+
+use an attached property is when you can't do something in UI and you can't do it any other way
+
+
+NOTE: AttachedProperty is one instance shared for all elements that have it
+so if u make 100 element and set EX: FadeInProperty so they all have the same instance of this property{same code(class)}

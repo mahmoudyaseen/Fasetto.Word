@@ -1,0 +1,77 @@
+﻿<local:BasePage x:TypeArguments="local:RegisterViewModel" x:Class="Fasetto.Word.RegisterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Fasetto.Word"
+      xmlns:core="clr-namespace:Fasetto.Word.Core;assembly=Fasetto.Word.Core"
+      mc:Ignorable="d" 
+      x:Name="Page"
+      d:DesignHeight="700" d:DesignWidth="700"
+      >
+
+    <Border>
+        <Grid>
+            <!-- show scrollviewer if there is moro elements -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" 
+                            TextBlock.TextAlignment="Center">
+                    <!-- This property will be added to all textblocks in this stackpanel -->
+
+                    <!-- Login main content white box -->
+                    <Border Background="{StaticResource ForegroundLightBrush}" CornerRadius="10"
+                            Padding="15 50 15 15" Width="330" Margin="50 50 50 0" >
+
+                        <StackPanel>
+
+                            <!-- Sign Up Header -->
+                            <TextBlock Text="Sign Up" FontSize="{StaticResource FontSizeXXLarge}" 
+                                       FontFamily="{StaticResource LatoRegular}" 
+                                       Foreground="{StaticResource WordBlueBrush}" />
+
+                            <!-- Sign Up subtext -->
+                            <TextBlock Text="It's about to get fun" FontSize="{StaticResource FontSizeLarge}"
+                                       Foreground="{StaticResource ForegroundDarkBrush}" Margin="0 0 0 20"/>
+
+                            <!-- Username -->
+                            <TextBox Text="{Binding Username}"
+                                     Tag="Username"
+                                     local:IsFocusedProperty.Value="True"/>
+
+                            <!-- Email -->
+                            <TextBox Text="{Binding Email}"
+                                     Tag="Email"
+                                     />
+
+                            <!-- Password -->
+                            <PasswordBox x:Name="PasswordText" Tag="Password" Margin="0 0 0 30"/>
+
+                            <!-- Next Button -->
+                            <!-- U can't set the button content directily so u have to overwrite the button template -->
+                            <!-- u can go to any button in ui and make edit a copy so u will have the current template
+                                 and update it instead of start from scratch -->
+                            <Button Content="Register" 
+                                    IsDefault="True"
+                                    local:IsBusyProperty.Value="{Binding RegisterIsRunning}"
+                                    Command="{Binding RegisterCommand}"
+                                    CommandParameter="{Binding ElementName=Page}"
+                                    HorizontalAlignment="Center" />
+
+                        </StackPanel>
+
+                    </Border>
+
+                    <Button Style="{StaticResource TextButton}"
+                            Command="{Binding LoginCommand}"
+                            Content="Or, I already have an account..." 
+                            HorizontalAlignment="Center"/>
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+        </Grid>
+    </Border>
+</local:BasePage>
